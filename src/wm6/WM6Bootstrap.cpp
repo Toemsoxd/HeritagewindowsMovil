@@ -94,7 +94,6 @@ static bool InitD3DM(HWND hwnd)
     pp.hDeviceWindow = hwnd;
     pp.Windowed = TRUE;
     pp.EnableAutoDepthStencil = FALSE;
-    pp.FullScreen_PresentationInterval = D3DMVSYNC_DEFAULT;
 
     hr = g_d3dm->CreateDevice(
         0,
