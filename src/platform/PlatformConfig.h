@@ -13,6 +13,13 @@
 //                          macro stays CTR_PLATFORM (defined by the toolchain)
 //                          while this is its feature-switch spelling.
 //
+// Windows Mobile 6 Standard / HTC S730 target. This is kept separate from
+// the desktop and console identities so WM6-specific code can be selected
+// without pretending the phone is a PC or a 3DS.
+#ifndef PLATFORM_WM6
+#  define PLATFORM_WM6 0
+#endif
+
 // Use feature/profile checks for game-side compromises. There are TWO, and the
 // split matters -- see the PLATFORM_BOUNDED_WORLD block further down:
 //   PLATFORM_BOUNDED_WORLD -> the world must fit in a fixed memory budget. Use
@@ -233,7 +240,7 @@
 #endif
 
 #ifndef PLATFORM_PC
-#  if PLATFORM_PS2 || PLATFORM_WII || PLATFORM_3DS
+#  if PLATFORM_PS2 || PLATFORM_WII || PLATFORM_3DS || PLATFORM_WM6
 #    define PLATFORM_PC 0
 #  else
 #    define PLATFORM_PC 1
@@ -269,7 +276,7 @@
 // What the Wii DID need from the old combined profile is the memory half, which
 // is now PLATFORM_BOUNDED_WORLD below.
 #ifndef PLATFORM_CONSOLE_LOW
-#  if PLATFORM_PS2
+#  if PLATFORM_PS2 || PLATFORM_WM6
 #    define PLATFORM_CONSOLE_LOW 1
 #  else
 #    define PLATFORM_CONSOLE_LOW 0
@@ -307,7 +314,7 @@
 // certainly cannot afford unbounded memory, and the implication keeps every
 // existing PS2 configuration -- including -DWII_CONSOLE_LOW=ON -- valid.
 #ifndef PLATFORM_BOUNDED_WORLD
-#  if PLATFORM_PS2 || PLATFORM_WII || PLATFORM_3DS || PLATFORM_CONSOLE_LOW
+#  if PLATFORM_PS2 || PLATFORM_WII || PLATFORM_3DS || PLATFORM_WM6 || PLATFORM_CONSOLE_LOW
 #    define PLATFORM_BOUNDED_WORLD 1
 #  else
 #    define PLATFORM_BOUNDED_WORLD 0
@@ -361,7 +368,7 @@ declares."
 // This is deliberately NOT tied to PLATFORM_CONSOLE_LOW: it is a backend
 // capability question, not a performance budget.
 #ifndef PLATFORM_FONT_IMMEDIATE
-#  if PLATFORM_PS2 || PLATFORM_WII || PLATFORM_3DS
+#  if PLATFORM_PS2 || PLATFORM_WII || PLATFORM_3DS || PLATFORM_WM6
 #    define PLATFORM_FONT_IMMEDIATE 1
 #  else
 #    define PLATFORM_FONT_IMMEDIATE 0
@@ -397,7 +404,7 @@ declares."
 // because the matrix stack is live at replay. Kept separate from
 // PLATFORM_PERSISTENT_RENDER_MESH for exactly that reason.
 #ifndef PLATFORM_MODEL_PERSISTENT_MESH
-#  if PLATFORM_PS2 || PLATFORM_3DS
+#  if PLATFORM_PS2 || PLATFORM_3DS || PLATFORM_WM6
 #    define PLATFORM_MODEL_PERSISTENT_MESH 1
 #  else
 #    define PLATFORM_MODEL_PERSISTENT_MESH PLATFORM_PERSISTENT_RENDER_MESH
